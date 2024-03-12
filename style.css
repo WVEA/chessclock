@@ -24,3 +24,20 @@ button {
     padding: 10px 20px;
     font-size: 16px;
 }
+#instructions, #settings {
+    margin-bottom: 20px;
+}
+
+#customSettings {
+    margin-top: 10px;
+}
+
+label, button {
+    display: block;
+    margin-top: 10px;
+}
+
+input, select {
+    margin-top: 5px;
+}
+
