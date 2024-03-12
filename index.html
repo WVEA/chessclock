@@ -1,44 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Clock</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
-</head>
-<body>
-    <div id="chessClock">
-        <div id="timer1" class="timer">05:00</div>
-        <div id="timer2" class="timer">05:00</div>
-        <button id="startPauseBtn">Start</button>
-        <button id="resetBtn">Reset</button>
+<div id="timer1" class="timer">05:00</div>
+<div id="timer2" class="timer">05:00</div>
+
+<button id="settingsBtn">Settings</button>
+<div id="settingsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Set Time</h2>
+        <input type="number" id="minutes" placeholder="Minutes" min="0">
+        <input type="number" id="seconds" placeholder="Seconds" min="0" max="59">
+        <button id="applySettings">Apply</button>
     </div>
-    <div id="instructions">
-    <h2>Instructions</h2>
-    <p>Press the spacebar to switch between players' clocks. Use the Start/Pause button to control the timer and the Reset button to reset the clocks to the selected time settings.</p>
 </div>
-<div id="settings">
-    <h2>Settings</h2>
-    <label for="presets">Presets:</label>
-    <select id="presets">
-        <option value="5|0">Blitz (5+0)</option>
-        <option value="3|2">Blitz (3+2)</option>
-        <option value="10|0">Rapid (10+0)</option>
-        <option value="custom">Custom</option>
-    </select>
-
-    <div id="customSettings" style="display:none;">
-        <label for="time">Time (minutes):</label>
-        <input type="number" id="time" min="1" value="5">
-
-        <label for="increment">Increment (seconds):</label>
-        <input type="number" id="increment" min="0" value="0">
-    </div>
-
-    <button id="applySettings">Apply Settings</button>
-</div>
-
-    <script src="script.js"></script> <!-- Link to your JavaScript file -->
-</body>
-</html>
-
