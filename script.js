@@ -1,15 +1,14 @@
-// script.js
 let timer1 = document.getElementById('timer1');
 let timer2 = document.getElementById('timer2');
-let startPauseBtn = document.getElementById('startPauseBtn');
-let resetBtn = document.getElementById('resetBtn');
+let settingsBtn = document.getElementById('settingsBtn');
+let modal = document.getElementById('settingsModal');
+let closeBtn = document.querySelector(".close");
+let applySettings = document.getElementById('applySettings');
 
-let countdown1, countdown2;
-let timer1Seconds = 5 * 60; // 5 minutes in seconds
-let timer2Seconds = 5 * 60; // 5 minutes in seconds
-let isTimer1Active = false;
-let isTimer2Active = false;
-let isGameStarted = false;
+let countdown;
+let activeTimer = timer1; // Start with timer1
+let timer1Seconds = 5 * 60; // Default 5 minutes
+let timer2Seconds = 5 * 60; // Default 5 minutes
 
 function updateDisplay() {
     timer1.textContent = `${Math.floor(timer1Seconds / 60)}:${('0' + timer1Seconds % 60).slice(-2)}`;
@@ -17,86 +16,33 @@ function updateDisplay() {
 }
 
 function switchTimer() {
-    if (!isGameStarted) return;
-
-    if (isTimer1Active) {
-        clearInterval(countdown1);
-        countdown2 = setInterval(() => {
-            timer2Seconds--;
-            updateDisplay();
-            if (timer2Seconds <= 0) clearInterval(countdown2);
-        }, 1000);
-    } else {
-        clearInterval(countdown2);
-        countdown1 = setInterval(() => {
+    clearInterval(countdown);
+    countdown = setInterval(() => {
+        if (activeTimer === timer1) {
             timer1Seconds--;
-            updateDisplay();
-            if (timer1Seconds <= 0) clearInterval(countdown1);
-        }, 1000);
-    }
-    isTimer1Active = !isTimer1Active;
-    isTimer2Active = !isTimer2Active;
+            if (timer1Seconds <= 0) clearInterval(countdown);
+        } else {
+            timer2Seconds--;
+            if (timer2Seconds <= 0) clearInterval(countdown);
+        }
+        updateDisplay();
+    }, 1000);
+    activeTimer = activeTimer === timer1 ? timer2 : timer1;
 }
 
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'Space') {
-        switchTimer();
-    }
-});
+timer1.addEventListener('click', () => switchTimer());
+timer2.addEventListener('click', () => switchTimer());
 
-startPauseBtn.addEventListener('click', () => {
-    isGameStarted = !isGameStarted;
-    startPauseBtn.textContent = isGameStarted ? 'Pause' : 'Start';
-    if (isGameStarted) {
-        switchTimer();
-    } else {
-        clearInterval(countdown1);
-        clearInterval(countdown2);
-    }
-});
+settingsBtn.onclick = () => modal.style.display = "block";
+closeBtn.onclick = () => modal.style.display = "none";
+window.onclick = event => { if (event.target == modal) modal.style.display = "none"; }
 
-resetBtn.addEventListener('click', () => {
-    clearInterval(countdown1);
-    clearInterval(countdown2);
-    timer1Seconds = 5 * 60;
-    timer2Seconds = 5 * 60;
-    isTimer1Active = false;
-    isTimer2Active = false;
-    isGameStarted = false;
-    startPauseBtn.textContent = 'Start';
+applySettings.onclick = () => {
+    let minutes = document.getElementById('minutes').value || 0;
+    let seconds = document.getElementById('seconds').value || 0;
+    timer1Seconds = timer2Seconds = parseInt(minutes) * 60 + parseInt(seconds);
     updateDisplay();
-});
+    modal.style.display = "none";
+};
 
 updateDisplay();
-let presets = document.getElementById('presets');
-let customSettings = document.getElementById('customSettings');
-let applySettings = document.getElementById('applySettings');
-let timeInput = document.getElementById('time');
-let incrementInput = document.getElementById('increment');
-
-presets.addEventListener('change', () => {
-    if (presets.value === 'custom') {
-        customSettings.style.display = 'block';
-    } else {
-        customSettings.style.display = 'none';
-        let [time, increment] = presets.value.split('|');
-        timer1Seconds = timer2Seconds = parseInt(time) * 60;
-        // Handle increment logic here if needed
-    }
-    updateDisplay();
-});
-
-applySettings.addEventListener('click', () => {
-    if (presets.value === 'custom') {
-        timer1Seconds = timer2Seconds = parseInt(timeInput.value) * 60;
-        // Handle increment logic here if needed
-        updateDisplay();
-    }
-});
-
-// Update the existing switchTimer function to handle increments
-function switchTimer() {
-    // Your existing switch timer logic
-    // Add increment logic here, adjusting the timer values based on the incrementInput value
-}
-
