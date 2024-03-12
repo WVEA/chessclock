@@ -68,3 +68,35 @@ resetBtn.addEventListener('click', () => {
 });
 
 updateDisplay();
+let presets = document.getElementById('presets');
+let customSettings = document.getElementById('customSettings');
+let applySettings = document.getElementById('applySettings');
+let timeInput = document.getElementById('time');
+let incrementInput = document.getElementById('increment');
+
+presets.addEventListener('change', () => {
+    if (presets.value === 'custom') {
+        customSettings.style.display = 'block';
+    } else {
+        customSettings.style.display = 'none';
+        let [time, increment] = presets.value.split('|');
+        timer1Seconds = timer2Seconds = parseInt(time) * 60;
+        // Handle increment logic here if needed
+    }
+    updateDisplay();
+});
+
+applySettings.addEventListener('click', () => {
+    if (presets.value === 'custom') {
+        timer1Seconds = timer2Seconds = parseInt(timeInput.value) * 60;
+        // Handle increment logic here if needed
+        updateDisplay();
+    }
+});
+
+// Update the existing switchTimer function to handle increments
+function switchTimer() {
+    // Your existing switch timer logic
+    // Add increment logic here, adjusting the timer values based on the incrementInput value
+}
+
